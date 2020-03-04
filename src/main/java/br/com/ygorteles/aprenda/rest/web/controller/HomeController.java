@@ -5,11 +5,8 @@ import br.com.ygorteles.aprenda.rest.domain.model.Heroi;
 import br.com.ygorteles.aprenda.rest.domain.repository.jpa.HeroiJpaRepository;
 import br.com.ygorteles.aprenda.rest.domain.service.HeroiService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,7 +24,7 @@ public class HomeController {
     @GetMapping("/index")
     public ResponseEntity<Heroi> index(@RequestParam Long id) {
 
-        return new ResponseEntity<Heroi>(heroiJpaRepository.findById(id).orElse(null), HttpStatus.OK);
+        return new ResponseEntity<>(heroiJpaRepository.findById(id).orElse(null), HttpStatus.OK);
     }
 
     @GetMapping
