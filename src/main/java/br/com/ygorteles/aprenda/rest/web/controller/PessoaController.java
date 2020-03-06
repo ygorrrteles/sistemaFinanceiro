@@ -4,6 +4,7 @@ import br.com.ygorteles.aprenda.rest.domain.model.Categoria;
 import br.com.ygorteles.aprenda.rest.domain.model.Pessoa;
 import br.com.ygorteles.aprenda.rest.domain.repository.jpa.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,5 +30,10 @@ public class PessoaController {
 
         Utils.setarLocationPost(pessoaCriada.getCodigo(),"/{codigo}", response);
         return ResponseEntity.created(Utils.uri).body(pessoaCriada);
+    }
+
+    @GetMapping("/{codigo}")
+    public ResponseEntity<Categoria> buscarPeloCodigo(@PathVariable Long codigo){
+        return new ResponseEntity(pessoaRepository.findById(codigo).orElse(null), HttpStatus.OK);
     }
 }
