@@ -1,14 +1,14 @@
 package br.com.ygorteles.aprenda.rest.domain.model;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Objects;
 
 @Entity
-@Table(name = "categoria")
-public class Categoria {
+@Table(name = "pessoa")
+public class Pessoa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,8 +16,16 @@ public class Categoria {
 
     @NotNull
     @NotBlank
-    @Size(min = 3, max = 20)
-    private String nome;
+    @Size(min = 3, max = 50)
+    private String Nome;
+
+    @NotNull
+    private Boolean ativo;
+
+    @Valid
+    @NotNull
+    @Embedded
+    private Endereco endereco;
 
     public Long getCodigo() {
         return codigo;
@@ -28,23 +36,26 @@ public class Categoria {
     }
 
     public String getNome() {
-        return nome;
+        return Nome;
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        Nome = nome;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Categoria categoria = (Categoria) o;
-        return codigo.equals(categoria.codigo);
+    public Boolean getAtivo() {
+        return ativo;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(codigo);
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
     }
 }
