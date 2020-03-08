@@ -36,5 +36,4 @@ public class CategoriaContoller {
     public ResponseEntity<Categoria> buscarPeloCodigo(@PathVariable Long codigo){
         return new ResponseEntity<>(categoriaRepository.findById(codigo).orElse(null), HttpStatus.OK);
     }
-
 }
