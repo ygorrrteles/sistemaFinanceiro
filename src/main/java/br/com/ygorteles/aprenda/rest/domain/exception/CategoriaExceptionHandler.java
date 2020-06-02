@@ -4,10 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContext;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -45,12 +47,24 @@ public class CategoriaExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, erros, headers, HttpStatus.BAD_REQUEST, request);
     }
 
-
     @ExceptionHandler({EmptyResultDataAccessException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public void handleEmptyResultDataAccessException(){
 
     }
+
+    @ExceptionHandler({DataIntegrityViolationException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void handleDataIntegrityViolationException() {
+
+    }
+
+    @ExceptionHandler({HttpMessageConversionException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void handleHttpMessageConversionException() {
+    }
+
+
 
     private List<Erro> criarListaDeErros(BindingResult bindingResult){
         List<Erro> erros = new ArrayList<>();
@@ -63,7 +77,7 @@ public class CategoriaExceptionHandler extends ResponseEntityExceptionHandler {
         return erros;
     }
 
-    public static class Erro{
+    public static class Erro {
 
         private String mensagemUsuario;
         private String mensagemDesenvolvedor;
@@ -72,5 +86,14 @@ public class CategoriaExceptionHandler extends ResponseEntityExceptionHandler {
             this.mensagemUsuario = mensagemUsuario;
             this.mensagemDesenvolvedor = mensagemDesenvolvedor;
         }
+
+        public String getMensagemUsuario() {
+            return mensagemUsuario;
+        }
+
+        public String getMensagemDesenvolvedor() {
+            return mensagemDesenvolvedor;
+        }
+
     }
 }

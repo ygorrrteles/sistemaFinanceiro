@@ -15,7 +15,6 @@ public class Categoria {
     private Long codigo;
 
     @NotNull
-    @NotBlank
     @Size(min = 3, max = 20)
     private String nome;
 
