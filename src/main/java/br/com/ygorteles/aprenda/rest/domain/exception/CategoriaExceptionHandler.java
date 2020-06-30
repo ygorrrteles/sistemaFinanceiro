@@ -1,5 +1,6 @@
 package br.com.ygorteles.aprenda.rest.domain.exception;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContext;
@@ -56,7 +57,6 @@ public class CategoriaExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({DataIntegrityViolationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void handleDataIntegrityViolationException() {
-
     }
 
     @ExceptionHandler({HttpMessageConversionException.class})

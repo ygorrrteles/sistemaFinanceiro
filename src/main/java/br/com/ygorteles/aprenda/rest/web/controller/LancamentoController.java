@@ -4,9 +4,13 @@ import br.com.ygorteles.aprenda.rest.domain.exception.PessoaInexistenteOuInativa
 import br.com.ygorteles.aprenda.rest.domain.exception.YgaoException;
 import br.com.ygorteles.aprenda.rest.domain.model.Lancamento;
 import br.com.ygorteles.aprenda.rest.domain.model.Pessoa;
+import br.com.ygorteles.aprenda.rest.domain.repository.filter.LancamentoFilter;
 import br.com.ygorteles.aprenda.rest.domain.repository.jpa.LancamentoRepository;
 import br.com.ygorteles.aprenda.rest.domain.service.LancamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,15 +27,24 @@ public class LancamentoController {
     @Autowired
     LancamentoService lancamentoService;
 
+    @Autowired
+    LancamentoRepository lancamentoRepository;
+
     @GetMapping
-    public List<Lancamento> listar(){
-        return lancamentoService.buscarTodos();
+    public Page<Lancamento> listar(Pageable pageable){
+
+        return lancamentoService.buscarTodos(pageable);
     }
 
     @GetMapping("/{codigo}")
     public Lancamento buscar(@PathVariable Long codigo) {
         return lancamentoService.buscarUm(codigo);
     }
+
+//    @GetMapping()
+//    public List<Lancamento> pesquisar(LancamentoFilter lancamentoFilter) {
+//        return lancamentoRepository.filtrar(lancamentoFilter);
+//    }
 
     @PostMapping
     public ResponseEntity<?> criar(@Valid @RequestBody Lancamento lancamento, HttpServletResponse response){
@@ -45,5 +58,11 @@ public class LancamentoController {
 
         Utils.setarLocationPost(lancamentoCriado.getCodigo(),"/{codigo}", response);
         return ResponseEntity.created(Utils.uri).body(lancamentoCriado);
+    }
+
+    @DeleteMapping("/{codigo}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void remover(@PathVariable Long codigo) {
+        lancamentoRepository.deleteById(codigo);
     }
 }

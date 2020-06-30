@@ -8,11 +8,15 @@ import br.com.ygorteles.aprenda.rest.domain.repository.jpa.LancamentoRepository;
 import br.com.ygorteles.aprenda.rest.domain.repository.jpa.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.List;
+
 
 @Service
 public class LancamentoService {
@@ -23,8 +27,9 @@ public class LancamentoService {
     @Autowired
     PessoaRepository pessoaRepository;
 
-    public List<Lancamento> buscarTodos() {
-        return lancamentoRepository.findAll();
+    public Page<Lancamento> buscarTodos(Pageable pageable) {
+
+        return lancamentoRepository.findAll(pageable);
     }
 
     public Lancamento buscarUm(Long codigo) {
@@ -39,7 +44,7 @@ public class LancamentoService {
         Pessoa pessoa = pessoaRepository.findById(lancamento.getPessoa().getCodigo()).orElse(null);
 
         if(pessoa == null || !pessoa.getAtivo()) {
-            throw new PessoaInexistenteOuInativaException("teeestee");
+            throw new PessoaInexistenteOuInativaException("Teste");
         }
 
         return lancamentoRepository.save(lancamento);
